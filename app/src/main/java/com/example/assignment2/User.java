@@ -6,6 +6,7 @@ public class User {
     private String email;
     private String type;
     private ArrayList<String> played;
+    private ArrayList<String> liked;
 
     User(String email, String type){
         this.email = email;
@@ -13,7 +14,7 @@ public class User {
     }
 
     User(){
-
+        this.played = new ArrayList<>();
     }
 
     public void setEmail(String email) {
@@ -34,6 +35,14 @@ public class User {
 
     public ArrayList<String> getPlayed() {
         return played;
+    }
+
+    public ArrayList<String> getLiked() {
+        return liked;
+    }
+
+    public void setLiked(ArrayList<String> liked) {
+        this.liked = liked;
     }
 
     public void setPlayed(ArrayList<String> played) {

@@ -57,11 +57,11 @@ public class MainActivity extends AppCompatActivity {
         String user = intent.getStringExtra("user");
 
         String type = typeCheck(user);
+        intent.putExtra("type",type);
 
         //add Fragments
         addT = new AddT();
         listT = new ListT();
-        prevT = new PrevT();
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }else{
+
+            prevT = new PrevT();
             ft.add(R.id.frame,prevT);
             ft.commit();
             TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
@@ -140,5 +142,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
 }

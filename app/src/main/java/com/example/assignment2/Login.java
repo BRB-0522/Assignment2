@@ -30,12 +30,12 @@ public class Login extends AppCompatActivity {
         Button login = (Button) findViewById(R.id.login);
         Button register = (Button) findViewById(R.id.register);
 
-        String e = email.getText().toString();
-        String p = pw.getText().toString();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String e = email.getText().toString();
+                String p = pw.getText().toString();
                 firebaseAuth.signInWithEmailAndPassword(e,p).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

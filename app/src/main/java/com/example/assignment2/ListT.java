@@ -42,6 +42,7 @@ public class ListT extends Fragment {
     List<Tournament> TL;
 
     UpdateT updateT = new UpdateT();
+    PlayQ qp;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -210,7 +211,12 @@ public class ListT extends Fragment {
                         updateT.setArguments(bundle);
 
                         getParentFragmentManager().beginTransaction().remove(ListT.this);
-                        getParentFragmentManager().beginTransaction().replace(R.id.frame,updateT).commitAllowingStateLoss();
+                        if(getActivity().getIntent().getStringExtra("type")=="admin"){
+                            getParentFragmentManager().beginTransaction().replace(R.id.frame,updateT).commitAllowingStateLoss();
+                        }else{
+                            getParentFragmentManager().beginTransaction().replace(R.id.frame,qp = new PlayQ()).commitAllowingStateLoss();
+                        }
+
                     }
                 });
             }
