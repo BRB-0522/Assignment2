@@ -210,15 +210,15 @@ public class UpdateT extends Fragment {
             @Override
             public void onClick(View v) {
                 if(Sdate.getText().toString()==""||Edate.getText().toString()==""||tname.getText().toString()==""){
-                    Toast.makeText(getContext(), "Fill all the information", Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(), "Fill all the information", Toast.LENGTH_LONG);
                 }else if(startC.before(endC.getTime())==true){
-                    Toast.makeText(getContext(), "The end date must be later than start date", Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(), "The end date must be later than start date", Toast.LENGTH_LONG);
                 }else if(Exist==true){
-                    Toast.makeText(getContext(),"Tournament name must be unique.",Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(),"Tournament name must be unique.",Toast.LENGTH_LONG);
                 }
                 else {
                     Tsave(tname.getText().toString(), T.getCategory(), T.getDifficulty(), T.getQuizs(), Sdate.getText().toString(), Edate.getText().toString());
-                    Toast.makeText(getContext(),"Added successfully",Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(),"Added successfully",Toast.LENGTH_LONG);
                     getParentFragmentManager().beginTransaction().remove(UpdateT.this);
                     LT = new ListT();
                     getParentFragmentManager().beginTransaction().replace(R.id.frame,LT).commitAllowingStateLoss();
@@ -232,7 +232,7 @@ public class UpdateT extends Fragment {
                 db.collection("Tournament").document(T.getTname()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getContext(),"Deleted successfully",Toast.LENGTH_LONG);
+                        Toast.makeText(v.getContext(),"Deleted successfully",Toast.LENGTH_LONG);
 
                         getParentFragmentManager().beginTransaction().remove(UpdateT.this);
 

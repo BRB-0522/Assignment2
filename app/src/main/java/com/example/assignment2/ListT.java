@@ -19,11 +19,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -39,12 +43,14 @@ public class ListT extends Fragment {
 
     RecyclerView RV;
     TAdapter TA;
-    List<Tournament> TL;
+    ArrayList<Tournament> TL = new ArrayList<>();
+    Tournament T = new Tournament();
 
     UpdateT updateT = new UpdateT();
     PlayQ qp;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore db= FirebaseFirestore.getInstance();
+
 
     public ListT() {
         // Required empty public constructor
@@ -56,10 +62,24 @@ public class ListT extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    public void getT(){
+        TL.clear();
+        Query query = db.collection("Tournament");
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                for (DocumentSnapshot doc:value){
+                    T=doc.toObject(Tournament.class);
+                    TL.add(T);
+                }
+            }
+        });
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getT();
     }
 
     @Override
@@ -69,160 +89,53 @@ public class ListT extends Fragment {
         View v = inflater.inflate(R.layout.fragment_listt, container, false);
 
         RV = v.findViewById(R.id.RVtournament);
-        TL = new List<Tournament>() {
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean contains(@Nullable Object o) {
-                return false;
-            }
-
-            @NonNull
-            @Override
-            public Iterator<Tournament> iterator() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @NonNull
-            @Override
-            public <T> T[] toArray(@NonNull T[] a) {
-                return null;
-            }
-
-            @Override
-            public boolean add(Tournament tournament) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(@Nullable Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(@NonNull Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(@NonNull Collection<? extends Tournament> c) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(int index, @NonNull Collection<? extends Tournament> c) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(@NonNull Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(@NonNull Collection<?> c) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public Tournament get(int index) {
-                return null;
-            }
-
-            @Override
-            public Tournament set(int index, Tournament element) {
-                return null;
-            }
-
-            @Override
-            public void add(int index, Tournament element) {
-
-            }
-
-            @Override
-            public Tournament remove(int index) {
-                return null;
-            }
-
-            @Override
-            public int indexOf(@Nullable Object o) {
-                return 0;
-            }
-
-            @Override
-            public int lastIndexOf(@Nullable Object o) {
-                return 0;
-            }
-
-            @NonNull
-            @Override
-            public ListIterator<Tournament> listIterator() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public ListIterator<Tournament> listIterator(int index) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public List<Tournament> subList(int fromIndex, int toIndex) {
-                return null;
-            }
-        };
-
-        CollectionReference collectionReference = db.collection("Tournament");
-        collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                TL = queryDocumentSnapshots.toObjects(Tournament.class);
-
-                TA = new TAdapter(getContext(),TL);
-                RV.setAdapter(TA);
-                RV.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-
-                TA.setOnItemClickListener(new TAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int pos, Tournament T) {
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("Tournament", (Serializable) T);
-                        updateT.setArguments(bundle);
-
-                        getParentFragmentManager().beginTransaction().remove(ListT.this);
-                        if(getActivity().getIntent().getStringExtra("type")=="admin"){
-                            getParentFragmentManager().beginTransaction().replace(R.id.frame,updateT).commitAllowingStateLoss();
-                        }else{
-                            getParentFragmentManager().beginTransaction().replace(R.id.frame,qp = new PlayQ()).commitAllowingStateLoss();
-                        }
-
+        TL = (ArrayList<Tournament>) getActivity().getIntent().getSerializableExtra("T");
+        ArrayList<Tournament> NP = new ArrayList<>();
+        if(getActivity().getIntent().getStringExtra("type").equals("player")){
+            User u;
+            u = (User) getActivity().getIntent().getSerializableExtra("user");
+            for(Tournament t : TL){
+                for (String s : u.getPlayed()){
+                    if(t.getTname().equals(s)!=true){
+                        NP.add(t);
                     }
-                });
+                }
+            }
+
+
+        }
+
+        if(getActivity().getIntent().getStringExtra("type").equals("admin")){
+
+            TA = new TAdapter(getContext(),TL);
+        }else{
+
+            TA = new TAdapter(getContext(),NP);
+        }
+        RV.setAdapter(TA);
+        RV.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+
+        TA.setOnItemClickListener(new TAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos, Tournament T) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Tournament", (Serializable) T);
+
+                getParentFragmentManager().beginTransaction().remove(ListT.this);
+                if(getActivity().getIntent().getStringExtra("type").equals("admin")){
+                    updateT.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction().replace(R.id.frame,updateT).commitAllowingStateLoss();
+                }else{
+
+                    bundle.putSerializable("Quiz", (Serializable) T.getQuizs());
+
+                    qp = new PlayQ();
+                    qp.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction().replace(R.id.frame,qp).commitAllowingStateLoss();
+                }
+
             }
         });
-
-
 
 
         return v;

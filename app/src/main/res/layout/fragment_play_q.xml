@@ -5,62 +5,161 @@
     android:layout_height="match_parent"
     tools:context=".PlayQ">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:id="@+id/RVQuiz"/>
-
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:orientation="vertical"
+                android:layout_margin="15dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:gravity="center"
+                    android:text="Question"
+                    android:textColor="@color/black"
+                    android:background="@drawable/blank"
+                    android:textSize="30dp"
+                    android:id="@+id/question"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="Category: "/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/category"
+                        android:textSize="20dp"
+                        android:text="Category"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="Difficulty: "/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:id="@+id/difficulty"
+                        android:text="Difficulty"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:text="1"
+                        android:id="@+id/B1"
+                        android:layout_width="160dp"
+                        android:layout_height="80dp"
+                        android:textSize="20dp"
+                        android:background="@color/white"
+                        android:layout_margin="5dp"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:text="2"
+                        android:id="@+id/B2"
+                        android:layout_width="160dp"
+                        android:layout_height="80dp"
+                        android:background="@color/white"
+                        android:textSize="20dp"
+                        android:layout_margin="5dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:text="3"
+                        android:id="@+id/B3"
+                        android:layout_width="160dp"
+                        android:layout_height="80dp"
+                        android:background="@color/white"
+                        android:textSize="20dp"
+                        android:layout_margin="5dp"/>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:text="4"
+                        android:id="@+id/B4"
+                        android:layout_width="160dp"
+                        android:layout_height="80dp"
+                        android:background="@color/white"
+                        android:textSize="20dp"
+                        android:layout_margin="5dp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Score: "
-                android:textSize="20dp"/>
-            <TextView
-                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Score: "
+                    android:textSize="20dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="20dp"
+                    android:id="@+id/score"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="/10"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="20dp"
-                android:id="@+id/score"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="/10"/>
+                android:orientation="horizontal"
+                android:id="@+id/control"
+                android:gravity="center">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Previous"
+                    android:layout_margin="10dp"
+                    android:id="@+id/prev"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next"
+                    android:layout_margin="10dp"
+                    android:id="@+id/next"/>
+
+            </LinearLayout>
+
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="like"
-                android:layout_margin="10dp"
-                android:id="@+id/like"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="finish"
-                android:layout_margin="10dp"
-                android:id="@+id/finish"/>
-
-        </LinearLayout>
+    </ScrollView>
 
 
-    </LinearLayout>
 
 
 

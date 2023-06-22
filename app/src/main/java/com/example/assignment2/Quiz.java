@@ -1,8 +1,9 @@
 package com.example.assignment2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Quiz {
+public class Quiz implements Serializable {
 
     /*"response_code": 0,
             "results": [

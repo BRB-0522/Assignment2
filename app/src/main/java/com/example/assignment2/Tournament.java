@@ -91,7 +91,4 @@ public class Tournament implements Serializable {
         this.like=like+1;
     }
 
-    public void dislike(){
-        this.like=like-1;
-    }
 }

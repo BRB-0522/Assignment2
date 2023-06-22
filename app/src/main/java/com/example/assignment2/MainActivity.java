@@ -29,23 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     User u = new User();
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
-    public String typeCheck(String n){
-
-        Query query = db.collection("User").whereEqualTo("email",n);
-        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                for (DocumentSnapshot doc : value){
-                    u = doc.toObject(User.class);
-                }
-            }
-        });
-
-        return u.getType();
-    }
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String user = intent.getStringExtra("user");
-
-        String type = typeCheck(user);
-        intent.putExtra("type",type);
+        type = intent.getStringExtra("type");
 
         //add Fragments
         addT = new AddT();
@@ -67,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction ft = fm.beginTransaction();
 
-        if(type=="admin"){
+        if(type.equals("admin")){
             ft.add(R.id.frame,addT);
             ft.commit();
 

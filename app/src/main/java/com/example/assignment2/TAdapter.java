@@ -9,10 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TAdapter extends RecyclerView.Adapter<TAdapter.TVH> {
 
+    Calendar start, end;
     private Context context;
     private List<Tournament> TList;
 
@@ -40,14 +46,57 @@ public class TAdapter extends RecyclerView.Adapter<TAdapter.TVH> {
         return new TVH(v);
     }
 
+    public int SCheck(String s, String e) throws ParseException {
+        int i=0;
+        Calendar now = Calendar.getInstance();
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.UK);
+
+        Date SD = sdf.parse(s);
+        Date ED = sdf.parse(e);
+
+        start = Calendar.getInstance();
+        end = Calendar.getInstance();
+
+        start.setTime(SD);
+        end.setTime(ED);
+
+        if(now.before(end)!=true){
+            i = 1;
+            //Past
+        }else if(now.after(start)!=true){
+            i = 2;
+            //upcoming
+        }
+
+        return i;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull TVH holder, int position){
+
+        int i;
+        String status="";
 
         holder.Tname.setText(TList.get(position).getTname());
         holder.Tcategory.setText(TList.get(position).getCategory());
         holder.Tdifficulty.setText(TList.get(position).getDifficulty());
         holder.Tlike.setText(TList.get(position).getSLike());
         holder.TendD.setText(TList.get(position).getEndDate());
+
+        try {
+            i = SCheck(TList.get(position).getStartDate(),TList.get(position).getEndDate());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        switch (i){
+            case 0: status ="Ongoing"; break;
+            case 1: status ="Past"; break;
+            case 2: status ="Upcoming"; break;
+        }
+
+        holder.TStatus.setText(status);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +120,7 @@ public class TAdapter extends RecyclerView.Adapter<TAdapter.TVH> {
 
     public static class TVH extends RecyclerView.ViewHolder{
 
-        TextView Tname, Tcategory, Tdifficulty,TendD, Tlike;
+        TextView Tname, Tcategory, Tdifficulty,TendD, Tlike, TStatus;
 
         public TVH(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +130,7 @@ public class TAdapter extends RecyclerView.Adapter<TAdapter.TVH> {
             Tdifficulty = (TextView) itemView.findViewById(R.id.TournamentD);
             TendD = (TextView) itemView.findViewById(R.id.TendD);
             Tlike = (TextView) itemView.findViewById(R.id.Tlike);
+            TStatus = (TextView) itemView.findViewById(R.id.status);
 
 
         }

@@ -253,9 +253,7 @@ public class AddT extends Fragment {
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(Q.size()==10){
-                    Q.clear();
-                }
+                Q.clear();
                 String C =category.getSelectedItem().toString();
                 String D=difficulty.getSelectedItem().toString();
 
@@ -271,9 +269,7 @@ public class AddT extends Fragment {
         difficulty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(Q.size()==10){
-                    Q.clear();
-                }
+                Q.clear();
                 String C =category.getSelectedItem().toString();
                 String D=difficulty.getSelectedItem().toString();
 
@@ -297,15 +293,15 @@ public class AddT extends Fragment {
                 String D=difficulty.getSelectedItem().toString();
 
                 if(Sdate.getText().toString()==""||Edate.getText().toString()==""||TName.getText().toString()==""){
-                    Toast.makeText(getContext(), "Fill all the information", Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(), "Fill all the information", Toast.LENGTH_LONG);
                 }else if(startC.before(endC.getTime())==true){
-                    Toast.makeText(getContext(), "The end date must be later than start date", Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(), "The end date must be later than start date", Toast.LENGTH_LONG);
                 }else if(Exist==true){
-                    Toast.makeText(getContext(),"Tournament name must be unique.",Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(),"Tournament name must be unique.",Toast.LENGTH_LONG);
                 }
                 else{
                     Tsave(TName.getText().toString(), C,D,Q,Sdate.getText().toString(),Edate.getText().toString());
-                    Toast.makeText(getContext(),"Added successfully",Toast.LENGTH_LONG);
+                    Toast.makeText(v.getContext(),"Added successfully",Toast.LENGTH_LONG);
                 }
             }
         });
